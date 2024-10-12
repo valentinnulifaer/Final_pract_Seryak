@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Жанр</title>
+</head>
+<body>
+<h1>Добавить/Редактировать жанр</h1>
+<form th:action="@{/genres/add}" th:object="${genre}" method="post">
+  <label>Название:</label>
+  <input type="text" th:field="*{name}" /><br/>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+  <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Форма фильма</title>
+</head>
+<body>
+<h1>Добавить/Редактировать фильм</h1>
+<form th:action="${movie.id == null} ? @{/movies/add} : @{/movies/update/{id}(id=${movie.id})}" th:object="${movie}" method="post">
+  <label>Название:</label>
+  <input type="text" th:field="*{title}" /><br/>
+  <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+
+  <label>Описание:</label>
+  <textarea th:field="*{description}"></textarea><br/>
+  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+
+  <label>Дата выхода:</label>
+  <input type="date" th:field="*{releaseDate}" /><br/>
+  <div th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></div>
+
+  <label>Рейтинг:</label>
+  <input type="number" step="0.1" th:field="*{rating}" /><br/>
+  <div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+
+  <label>Жанр:</label>
+  <select th:field="*{genre.id}">
+    <option value="" disabled selected>Выберите жанр</option>
+    <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+  </select><br/>
+  <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
+
+  <label>Режиссёр:</label>
+  <select th:field="*{director.id}">
+    <option value="" disabled selected>Выберите режиссёра</option>
+    <option th:each="director : ${directors}" th:value="${director.id}" th:text="${director.firstName} + ' ' + ${director.lastName}"></option>
+  </select><br/>
+  <div th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></div>
+
+  <label>Актёры:</label><br/>
+  <div th:each="actor : ${actors}">
+    <input type="checkbox" th:field="*{actors}" th:value="${actor.id}" th:checked="${movie.actors.contains(actor)}" />
+    <span th:text="${actor.firstName} + ' ' + ${actor.lastName}"></span><br/>
+  </div>
+  <div th:if="${#fields.hasErrors('actors')}" th:errors="*{actors}"></div>
+
+  <button type="submit">Сохранить</button>
+</form>
+<a th:href="@{/movies}">Назад к списку фильмов</a>
+</body>
+</html>

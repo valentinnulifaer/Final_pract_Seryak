@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Список фильмов</title>
+</head>
+<body>
+<h1>Список фильмов</h1>
+
+<a th:href="@{/movies/add}">Добавить фильм</a>
+
+<ul>
+  <li th:each="movie : ${movies}">
+    <span th:text="${movie.title}"></span> -
+    <span th:text="${movie.genre.name}"></span>
+    <a th:href="@{/movies/edit/{id}(id=${movie.id})}">Редактировать</a>
+    <form th:action="@{/movies/delete/{id}(id=${movie.id})}" method="post" style="display:inline;">
+      <button type="submit">Удалить</button>
+    </form>
+  </li>
+</ul>
+</body>
+</html>

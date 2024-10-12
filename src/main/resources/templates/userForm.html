@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${user.id == null} ? 'Добавить пользователя' : 'Редактировать пользователя'">Форма пользователя</title>
+</head>
+<body>
+
+<h1 th:text="${user.id == null} ? 'Добавить пользователя' : 'Редактировать пользователя'"></h1>
+
+<form th:action="${user.id == null} ? @{/users/add} : @{/users/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+  <div>
+    <label>Имя пользователя:</label>
+    <input type="text" th:field="*{username}" />
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+  </div>
+  <div>
+    <label>Пароль:</label>
+    <input type="password" th:field="*{password}" />
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+  </div>
+  <div>
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" />
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+  </div>
+  <div>
+    <label>Выберите роли:</label>
+    <select multiple th:field="*{roles}">
+      <option th:each="role : ${roles}"
+              th:value="${role.id}"
+              th:text="${role.name}"
+              th:selected="${user.roles != null ? user.roles.contains(role) : false}">
+      </option>
+    </select>
+    <div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+  </div>
+  <div>
+    <button type="submit">Сохранить</button>
+  </div>
+</form>
+
+<a th:href="@{/users}">Назад к списку пользователей</a>
+
+</body>
+</html>
